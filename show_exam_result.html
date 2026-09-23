@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exam Results</title>
+</head>
+<body>
+    <h1>Exam Results for {{ course.name }}</h1>
+    <h2>Your Grade: {{ grade }}%</h2>
+    
+    <h3>Submitted Answers:</h3>
+    {% for question in course.question_set.all %}
+        <p><strong>{{ question.content }}</strong></p>
+        {% for choice in question.choice_set.all %}
+            <ul>
+                <li>
+                    {{ choice.choice_text }} 
+                    {% if choice.id in selected_ids %}
+                        <b>(Selected)</b>
+                    {% endif %}
+                    {% if choice.is_correct %}
+                        - <span style="color: green;">Correct Answer</span>
+                    {% endif %}
+                </li>
+            </ul>
+        {% endfor %}
+    {% endfor %}
+</body>
+</html>
