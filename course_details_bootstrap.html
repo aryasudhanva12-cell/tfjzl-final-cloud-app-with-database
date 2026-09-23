@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ course.name }}</title>
+</head>
+<body>
+    <h1>{{ course.name }}</h1>
+    <p>{{ course.description }}</p>
+
+    <h2>Course Exam</h2>
+    <form action="{% url 'onlinecourse:submit' course.id %}" method="post">
+        {% csrf_token %}
+        {% for question in course.question_set.all %}
+            <p><strong>{{ question.content }}</strong></p>
+            {% for choice in question.choice_set.all %}
+                <label>
+                    <input type="radio" name="choice_{{ question.id }}" value="{{ choice.id }}">
+                    {% if choice.choice_text %}
+                        {{ choice.choice_text }}
+                    {% elif choice.content %}
+                        {{ choice.content }}
+                    {% else %}
+                        Choice {{ forloop.counter }}
+                    {% endif %}
+                </label><br>
+            {% endfor %}
+        {% endfor %}
+        <br>
+        <input type="submit" value="Submit Exam">
+    </form>
+</body>
+</html>
